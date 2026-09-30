@@ -23,30 +23,27 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		buscarPorId();
+		modificar();
 	}
 
-	private void buscarPorId() {
+	private void modificar() {
+
 		Optional<Categoria> categoriaBuscada = categoriasRepo.findById(1);
 
 		if (categoriaBuscada.isPresent()) {
-			System.out.println(categoriaBuscada.get());
+
+			Categoria categoriaTmp = categoriaBuscada.get();
+
+			categoriaTmp.setNombre("Ingeniería de Software");
+			categoriaTmp.setDescripcion("Desarrollo de sistemas");
+
+			categoriasRepo.save(categoriaTmp);
+
+			System.out.println(categoriaBuscada);
+			System.out.println("Categoría actualizada...");
+
 		} else {
 			System.out.println("Categoría no encontrada");
 		}
-	}
-
-	private void guardar() {
-		System.out.println("Guardando...");
-
-		Categoria nuevaCategoria = new Categoria();
-		nuevaCategoria.setNombre("Finanzas");
-		nuevaCategoria.setDescripcion(
-				"Trabajos relacionados con finanzas y contabilidad"
-		);
-
-		categoriasRepo.save(nuevaCategoria);
-
-		System.out.println(nuevaCategoria);
 	}
 }
