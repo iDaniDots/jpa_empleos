@@ -1,5 +1,6 @@
 package com.example.jpa_empleos;
 
+import com.example.jpa_empleos.models.Categoria;
 import com.example.jpa_empleos.repository.CategoriasRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,14 +21,15 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		eliminar();
+		mostrarTodos();
 	}
 
-	private void eliminar() {
-		int idCategoria = 1;
+	private void mostrarTodos() {
 
-		categoriasRepo.deleteById(idCategoria);
+		Iterable<Categoria> categorias = categoriasRepo.findAll();
 
-		System.out.println("Registro eliminado...");
+		for (Categoria categoria : categorias) {
+			System.out.println(categoria);
+		}
 	}
 }
