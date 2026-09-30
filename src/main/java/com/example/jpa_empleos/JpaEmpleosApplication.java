@@ -1,12 +1,9 @@
 package com.example.jpa_empleos;
 
-import com.example.jpa_empleos.models.Categoria;
 import com.example.jpa_empleos.repository.CategoriasRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Optional;
 
 @SpringBootApplication
 public class JpaEmpleosApplication implements CommandLineRunner {
@@ -23,27 +20,14 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		modificar();
+		eliminar();
 	}
 
-	private void modificar() {
+	private void eliminar() {
+		int idCategoria = 1;
 
-		Optional<Categoria> categoriaBuscada = categoriasRepo.findById(1);
+		categoriasRepo.deleteById(idCategoria);
 
-		if (categoriaBuscada.isPresent()) {
-
-			Categoria categoriaTmp = categoriaBuscada.get();
-
-			categoriaTmp.setNombre("Ingeniería de Software");
-			categoriaTmp.setDescripcion("Desarrollo de sistemas");
-
-			categoriasRepo.save(categoriaTmp);
-
-			System.out.println(categoriaBuscada);
-			System.out.println("Categoría actualizada...");
-
-		} else {
-			System.out.println("Categoría no encontrada");
-		}
+		System.out.println("Registro eliminado...");
 	}
 }
