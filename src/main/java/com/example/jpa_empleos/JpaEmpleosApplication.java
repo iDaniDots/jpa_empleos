@@ -1,12 +1,9 @@
 package com.example.jpa_empleos;
 
-import com.example.jpa_empleos.models.Categoria;
 import com.example.jpa_empleos.repository.CategoriasJPARepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.List;
 
 @SpringBootApplication
 public class JpaEmpleosApplication implements CommandLineRunner {
@@ -23,20 +20,13 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		buscarTodasJPA();
+		borrarTodasEnBloque();
 	}
 
 	/**
-	 * Método findAll - Interfaz JPARepository
+	 * Método deleteAllInBatch [Usar con precaución] - Interfaz JPARepository
 	 */
-	private void buscarTodasJPA() {
-
-		List<Categoria> categorias = categoriasJPARepo.findAll();
-
-		for (Categoria categoria : categorias) {
-			System.out.println(
-					categoria.getId() + " " + categoria.getNombre()
-			);
-		}
+	private void borrarTodasEnBloque() {
+		categoriasJPARepo.deleteAllInBatch();
 	}
 }
