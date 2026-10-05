@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @SpringBootApplication
 public class JpaEmpleosApplication implements CommandLineRunner {
@@ -23,18 +24,22 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		buscarTodosPaginacion();
+		buscarTodosPaginacionOrdenados();
 	}
 
 	/**
-	 * Metodo findAll [Con Paginación]
+	 * Metodo findAll [Con paginacion y Ordenados]
 	 * Interfaz PagingAndSortingRepository
 	 */
-	private void buscarTodosPaginacion() {
+	private void buscarTodosPaginacionOrdenados() {
 
 		Page<Categoria> page =
 				categoriasJPARepo.findAll(
-						PageRequest.of(0, 5)
+						PageRequest.of(
+								0,
+								5,
+								Sort.by("nombre").descending()
+						)
 				);
 
 		System.out.println(
