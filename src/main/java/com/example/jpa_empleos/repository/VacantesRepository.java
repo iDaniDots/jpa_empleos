@@ -24,4 +24,6 @@ public interface VacantesRepository extends JpaRepository<Vacante, Integer> {
             Double salarioInicial,
             Double salarioFinal
     );
+
+    List<Vacante> findByEstatusIn(EstatusVacante[] listaEstatus);
 }
