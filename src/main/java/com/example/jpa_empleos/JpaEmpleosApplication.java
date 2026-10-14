@@ -28,6 +28,7 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	/**
 	 * Método findAll - Interfaz JPARepository
+	 * Recuperar todas las vacantes y mostrar su categoría
 	 */
 	private void buscarVacantes() {
 
@@ -35,7 +36,10 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 		for (Vacante vacante : vacantes) {
 			System.out.println(
-					vacante.getId() + ". " + vacante.getNombre()
+					vacante.getId() + ". " +
+							vacante.getNombre() +
+							" -> " +
+							vacante.getCategoria().getNombre()
 			);
 		}
 	}
