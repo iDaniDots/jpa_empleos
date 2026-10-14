@@ -1,12 +1,14 @@
 package com.example.jpa_empleos;
 
+import com.example.jpa_empleos.models.Categoria;
+import com.example.jpa_empleos.models.EstatusVacante;
 import com.example.jpa_empleos.models.Vacante;
 import com.example.jpa_empleos.repository.VacantesRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
+import java.util.Date;
 
 @SpringBootApplication
 public class JpaEmpleosApplication implements CommandLineRunner {
@@ -23,24 +25,37 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		buscarVacantes();
+		guardarVacante();
 	}
 
 	/**
-	 * Método findAll - Interfaz JPARepository
-	 * Recuperar todas las vacantes y mostrar su categoría
+	 * Guardar una vacante
 	 */
-	private void buscarVacantes() {
+	private void guardarVacante() {
 
-		List<Vacante> vacantes = vacantesRepo.findAll();
+		Vacante vacante = new Vacante();
 
-		for (Vacante vacante : vacantes) {
-			System.out.println(
-					vacante.getId() + ". " +
-							vacante.getNombre() +
-							" -> " +
-							vacante.getCategoria().getNombre()
-			);
-		}
+		vacante.setNombre("Desarrollador Java PRO");
+		vacante.setDescripcion(
+				"Se busca desarrollador con experiencia en Spring Boot y JPA."
+		);
+		vacante.setFecha(new Date());
+		vacante.setSalario(25000.0);
+		vacante.setEstatus(EstatusVacante.Creada);
+		vacante.setDestacado(1);
+		vacante.setImagen("logo_empresa.png");
+		vacante.setDetalles(
+				"Trabajo remoto con horario flexible. Beneficios y capacitación incluidos."
+		);
+
+		// Categoría existente en tu BD
+		Categoria categoria = new Categoria();
+		categoria.setId(23);
+
+		vacante.setCategoria(categoria);
+
+		vacantesRepo.save(vacante);
+
+		System.out.println("Vacante guardada correctamente");
 	}
 }
