@@ -9,9 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
 
 @SpringBootApplication
 public class JpaEmpleosApplication implements CommandLineRunner {
@@ -36,40 +34,29 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		crearUsuarioConPerfiles();
+		buscarUsuario();
 	}
 
 	/**
-	 * Crear usuario con 2 perfiles
-	 * ADMINISTRADOR = 2
-	 * USUARIO = 3
+	 * Método para buscar un usuario y sus perfiles asociados
 	 */
-	private void crearUsuarioConPerfiles() {
+	public void buscarUsuario() {
 
-		Usuario nuevoUsuario = new Usuario();
+		Optional<Usuario> usuarioOptional = usuarioRepo.findById(1);
 
-		nuevoUsuario.setNombre("José García");
-		nuevoUsuario.setEmail("jose@gmail.com");
-		nuevoUsuario.setUsername("joseg");
-		nuevoUsuario.setPassword("12345");
-		nuevoUsuario.setEstatus(1);
-		nuevoUsuario.setFechaRegistro(LocalDate.now());
+		if (usuarioOptional.isPresent()) {
 
-		Perfil perfil1 = new Perfil();
-		perfil1.setId(2);
+			Usuario usuario = usuarioOptional.get();
 
-		Perfil perfil2 = new Perfil();
-		perfil2.setId(3);
+			System.out.println("Nombre: " + usuario.getNombre());
+			System.out.println("Perfiles asignados");
 
-		Set<Perfil> perfilesUsuario = new HashSet<>();
+			for (Perfil perfil : usuario.getPerfiles()) {
+				System.out.println(perfil.getPerfil());
+			}
 
-		perfilesUsuario.add(perfil1);
-		perfilesUsuario.add(perfil2);
-
-		nuevoUsuario.setPerfiles(perfilesUsuario);
-
-		usuarioRepo.save(nuevoUsuario);
-
-		System.out.println("Usuario guardado con sus perfiles");
+		} else {
+			System.out.println("Usuario no encontrado");
+		}
 	}
 }
