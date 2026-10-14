@@ -1,6 +1,7 @@
 package com.example.jpa_empleos;
 
 import com.example.jpa_empleos.models.Perfil;
+import com.example.jpa_empleos.models.Usuario;
 import com.example.jpa_empleos.repository.PerfilesRepository;
 import com.example.jpa_empleos.repository.UsuarioRepository;
 import com.example.jpa_empleos.repository.VacantesRepository;
@@ -8,8 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class JpaEmpleosApplication implements CommandLineRunner {
@@ -34,37 +36,40 @@ public class JpaEmpleosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		crearPerfiles();
+		crearUsuarioConPerfiles();
 	}
 
 	/**
-	 * Método para crear los perfiles
+	 * Crear usuario con 2 perfiles
+	 * ADMINISTRADOR = 2
+	 * USUARIO = 3
 	 */
-	private void crearPerfiles() {
-		perfilesRepo.saveAll(obtenerPerfiles());
-	}
+	private void crearUsuarioConPerfiles() {
 
-	/**
-	 * Método que regresa una lista de Perfiles
-	 * que se tienen en la aplicación de empleos
-	 */
-	private List<Perfil> obtenerPerfiles() {
+		Usuario nuevoUsuario = new Usuario();
 
-		List<Perfil> perfiles = new LinkedList<>();
+		nuevoUsuario.setNombre("José García");
+		nuevoUsuario.setEmail("jose@gmail.com");
+		nuevoUsuario.setUsername("joseg");
+		nuevoUsuario.setPassword("12345");
+		nuevoUsuario.setEstatus(1);
+		nuevoUsuario.setFechaRegistro(LocalDate.now());
 
 		Perfil perfil1 = new Perfil();
-		perfil1.setPerfil("SUPERVISOR");
+		perfil1.setId(2);
 
 		Perfil perfil2 = new Perfil();
-		perfil2.setPerfil("ADMINISTRADOR");
+		perfil2.setId(3);
 
-		Perfil perfil3 = new Perfil();
-		perfil3.setPerfil("USUARIO");
+		Set<Perfil> perfilesUsuario = new HashSet<>();
 
-		perfiles.add(perfil1);
-		perfiles.add(perfil2);
-		perfiles.add(perfil3);
+		perfilesUsuario.add(perfil1);
+		perfilesUsuario.add(perfil2);
 
-		return perfiles;
+		nuevoUsuario.setPerfiles(perfilesUsuario);
+
+		usuarioRepo.save(nuevoUsuario);
+
+		System.out.println("Usuario guardado con sus perfiles");
 	}
 }
